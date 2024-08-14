@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->uuid('paymentId');
+            $table->uuid('orderId');
+            $table->string('paymentMethod');
+            $table->decimal('amount', 10, 2);
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
