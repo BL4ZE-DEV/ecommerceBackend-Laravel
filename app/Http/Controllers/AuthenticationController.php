@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreuserRequest;
+use App\Mail\RegistrationSuccesful;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\JWT;
 
@@ -19,21 +21,30 @@ class AuthenticationController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password)
         ]);
-
-        if(!$user){
+    
+        if (!$user) {
             return response()->json([
-                'message' => 'error Regestration unsuccessful'
-            ],402);
-
+                'message' => 'error Registration unsuccessful'
+            ], 402);
         }
-
+    
         $token = JWTAuth::fromUser($user);
-
+    
+        try {
+            Mail::to($request->email)->send(new RegistrationSuccesful(['name' => $request->name, 'phone' => $request->phone]));
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'error',
+                'error' => $e->getMessage()
+            ]);
+        }
+    
         return response()->json([
-            'message' => 'Regestration successful',
+            'message' => 'Registration successful',
             'token' => $token,
             'data' => $user
-        ],200);
+        ], 200);
+
     }
 
     public function login(Request $request){
