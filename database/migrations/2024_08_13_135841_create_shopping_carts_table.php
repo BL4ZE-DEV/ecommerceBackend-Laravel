@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('shopping_carts', function (Blueprint $table) {
             $table->id();
             $table->uuid('cartId');
-            $table->uuid('userId');
-            $table->uuid('productId');
+            $table->foreignUuid('userId');
+            $table->foreignUuid('productId');
             $table->integer('quantity');
             $table->timestamps();
         });

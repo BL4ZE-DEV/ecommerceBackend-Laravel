@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,6 +30,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
+        'roleId',
         'userId',
         'name',
         'email',
@@ -44,6 +46,10 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'id',
+        'email_verified_at',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -91,6 +97,11 @@ class User extends Authenticatable implements JWTSubject
     public function shoppingcart() : HasMany
     {
         return $this->hasMany(shoppingCart::class, 'userId');
+    }
+
+    public function role() : BelongsTo
+    {
+        return $this->belongsTo(role::class, 'roleId');
     }
     
 }
