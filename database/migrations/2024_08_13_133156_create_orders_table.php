@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('orderId');
             $table->string('name');
-            $table->uuid('userId');
+            $table->foreignUuid('userId');
             $table-> string('status')->default('pending');
             $table->timestamps();
         });

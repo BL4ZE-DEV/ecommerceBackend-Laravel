@@ -13,6 +13,11 @@ class shoppingCart extends Model
 
     public function product() : BelongsTo
     {
-        return $this->belongsTo(product::class);
+        return $this->belongsTo(product::class, 'productId');
+    }
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'userId');
     }
 }
