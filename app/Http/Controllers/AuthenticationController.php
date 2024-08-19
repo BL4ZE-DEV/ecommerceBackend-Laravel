@@ -17,7 +17,7 @@ class AuthenticationController extends Controller
 {
     public function register(StoreUserRequest $request)
     {
-        // Find the role by name or assign 'customer' role by default
+    
         $role = Role::where('name', $request->role_name)->first();
     
         if ($role == null) {
@@ -25,7 +25,6 @@ class AuthenticationController extends Controller
         }
     
         if ($role) {
-            // Create the user and assign the role
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -34,7 +33,6 @@ class AuthenticationController extends Controller
                 'roleId' => $role->roleId
             ]);
         } else {
-            // Handle the case where neither the requested role nor the 'customer' role exists
             return response()->json(['error' => 'Role not found'], 404);
         }
     
