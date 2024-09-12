@@ -24,7 +24,8 @@ class Product extends Model
         'name',
         'quantity',
         'price',
-        'description'
+        'description',
+        'categoryId'
      ];
 
      protected $hidden = [
@@ -42,7 +43,7 @@ class Product extends Model
     }
     public function catgeory() : BelongsTo
     {
-        return $this->belongsTo(category::class,'categoryId');
+        return $this->belongsTo(category::class,'CategoryId');
     }
 
     public function orderItem() : HasMany
@@ -53,5 +54,10 @@ class Product extends Model
     public function shoppingCart() : HasMany
     {
         return $this->hasMany(shoppingCart::class, 'productId');
+    }
+
+    public function cartProduct() : HasMany 
+    {
+        return $this->hasMany(CartProduct::class, 'productId');    
     }
 }

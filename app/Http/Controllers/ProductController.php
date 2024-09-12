@@ -15,22 +15,23 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'true',
             'Data' => $products
-        ]);
+         ]);
     }
 
     public function store(StoreproductRequest $request){
-        $category = category::where('name', $request->category_name);
-        $product = Product::create([
+        $category = category::where('name', $request->category)->first();
+
+        $product = product::create([
             'name' => $request->name,
             'description' => $request->description,
+            'price' => $request->price,
             'quantity' => $request->quantity,
-            'price' =>$request->price,
             'categoryId' => $category->categoryId
         ]);
 
         return response()->json([
             'status' => true,
-            'message' => 'product created successfully',
+            'message' => 'success',
             'data' => $product
         ]);
     }
