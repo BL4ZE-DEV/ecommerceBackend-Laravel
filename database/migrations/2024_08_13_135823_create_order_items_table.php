@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->uuid('id');
-            $table->uuid('orderItemId');
-            $table->foreignUuid('productId');
-            $table->foreignUuid('orderId');
+            $table->uuid('orderItemId')->unique();
+            $table->foreignUuid('productId')->constrained('products', 'productId');
+            $table->foreignUuid('orderId')->constrained('orders', 'orderId');;
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->timestamps();
