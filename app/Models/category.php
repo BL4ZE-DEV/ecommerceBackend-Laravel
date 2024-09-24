@@ -18,7 +18,8 @@ class category extends Model
 
 
     protected $fillable = [
-        'name'
+        'name',
+        'description'
     ];
 
     protected $hidden = [
@@ -42,7 +43,7 @@ class category extends Model
 
     public function products() : HasMany
     {
-        return $this->hasMany(product::class, 'categoryId');
+        return $this->hasMany(product::class, 'CategoryId');
     }
 
 }

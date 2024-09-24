@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('shopping_carts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('cartId');
-            $table->foreignUuid('userId');
-            $table->foreignUuid('productId');
-            $table->integer('quantity');
+            $table->uuid('cartId')->unique();
+            $table->foreignUuid('userId')->constrained('users', 'userId');
             $table->timestamps();
         });
     }

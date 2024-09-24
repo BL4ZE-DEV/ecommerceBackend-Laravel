@@ -5,62 +5,76 @@ namespace App\Http\Controllers;
 use App\Models\product;
 use App\Http\Requests\StoreproductRequest;
 use App\Http\Requests\UpdateproductRequest;
+use App\Models\category;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $products = Product::latest()->paginate(10);
+
+        return response()->json([
+            'status' => 'true',
+            'Data' => $products
+         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function store(StoreproductRequest $request){
+        $category = category::where('name', $request->category)->first();
+
+        $product = product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'categoryId' => $category->categoryId
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'success',
+            'data' => $product
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreproductRequest $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(product $product)
     {
-        //
+        return response()->json([
+            'status' => true,
+            'message' => 'product fetched succesfully !',
+            'data' => $product
+         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(product $product)
-    {
-        //
+    public function update(UpdateproductRequest $request, product $product){
+        $category = category::where('name', $request->category_name);
+        $data = $product->update([
+            'name' => $request->name ?? $product->name,
+            'description' => $request->description ?? $product->description,
+            'quantity' => $request->quantity ?? $product->quantity,
+            'categoryId' => $category->categoryId ?? $product->categoryId
+         ]);
+
+         if($data){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product updated succesfully',
+                'data' => $data
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'error'
+            ]);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateproductRequest $request, product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(product $product)
-    {
-        //
+    public function delete(product $product){
+            if($product ->delete()){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Product deleted successfuly'
+                ]);
+            }
     }
 }
