@@ -36,11 +36,9 @@ class AuthenticationController extends Controller
             return response()->json(['error' => 'Role not found'], 404);
         }
     
-        // Generate a JWT token for the user
         $token = JWTAuth::fromUser($user);
     
         try {
-            // Send a registration success email
             Mail::to($request->email)->send(new RegistrationSuccesful(['name' => $request->name, 'phone' => $request->phone]));
         } catch (\Exception $e) {
             return response()->json([
@@ -51,7 +49,7 @@ class AuthenticationController extends Controller
     
         return response()->json([
             'message' => 'Registration successful',
-            'token' => $token,
+            'token' => $token,  
             'data' => $user
         ], 200);
     }
