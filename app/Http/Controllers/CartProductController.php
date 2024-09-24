@@ -5,62 +5,109 @@ namespace App\Http\Controllers;
 use App\Models\CartProduct;
 use App\Http\Requests\StoreCartProductRequest;
 use App\Http\Requests\UpdateCartProductRequest;
+use App\Models\Product;
+use App\Models\shoppingCart;
+use Illuminate\Support\Facades\Auth;
 
 class CartProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function addToCart(StoreCartProductRequest $request){
+
+        $cart  = shoppingCart::firstOrCreate([
+            'userId' => Auth::user()->userId
+        ]);
+
+        $product = Product::findOrFail($request->productId);
+
+        $cartProduct = CartProduct::where('cartId' , $cart->cartId)
+                                  ->where('productId', $product->productId)
+                                  ->first();
+
+        if($cartProduct){
+            $cartProduct->update([
+                'quantity' => $cartProduct->quantity + $request->quantity,
+                'amount' => $product->price
+            ]);
+        }else{
+            CartProduct::create([
+                'cartId' => $cart->cartId,
+                'productId' => $product->productId,
+                'amount' => $product->price,
+                'quantity' => $request->quantity           
+            ]);
+        }
+
+        return response()->json([
+            'status' => true, 
+            'message' => 'Product added to cart'
+        ]);
+    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function removeFromCart($productId)
     {
-        //
+        $cart = shoppingCart::where('userId', Auth::user()->userId)->first();
+
+        $product = Product::where('productId', $productId);
+
+        $cartProduct =  CartProduct::where('cartId', $cart->cartId)
+                                    ->where('productId', $product->productId)
+                                    ->first();
+        if($cartProduct){
+            $cartProduct->delete();
+
+            return response()->json([
+                'status' => true, 
+                'message' => 'product removed from cart'
+            ]);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCartProductRequest $request)
+    public function updateQuantity(UpdateCartProductRequest $request, $productId)
     {
-        //
+        $cart = shoppingCart::where('userId', Auth::user()->userId)->first();
+
+        $product = Product::where('productId', $productId);
+
+        $cartProduct =  CartProduct::where('cartId', $cart->cartId)
+                                    ->where('productId', $product->productId)
+                                    ->first();
+
+        if($cartProduct){
+
+            $cartProduct->update([
+                'quantity' => $request->quantity ?? $cartProduct->quantity
+            ]);
+
+            $cartProduct->save();
+
+            return response()->json([
+                'status' => true, 
+                'message' => 'quantity updated successfully'
+            ]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(CartProduct $cartProduct)
+    public function listCartProduct()
     {
-        //
-    }
+        $cart = shoppingCart::where('userId', Auth::user()->userId)->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CartProduct $cartProduct)
-    {
-        //
-    }
+        if(!$cart)
+        {
+            response()->json([
+                'status' => false,
+                'message' => 'cart is empty'
+            ],200);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCartProductRequest $request, CartProduct $cartProduct)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(CartProduct $cartProduct)
-    {
-        //
+        $cartProduct = CartProduct::where('cartId', $cart->cartId)
+                                    ->with('product')
+                                    ->get();
+        if($cartProduct){
+            return response()->json([
+                'status' => true,
+                'cartProduct' => $cartProduct
+            ]);
+        }
     }
 }
