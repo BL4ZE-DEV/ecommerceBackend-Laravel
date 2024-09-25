@@ -17,7 +17,6 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role)
     {
-        // Get the currently authenticated user
         $user = Auth::user();
 
         if (!$user || $user->role->name !== $role) {

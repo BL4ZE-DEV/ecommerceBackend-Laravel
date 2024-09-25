@@ -12,7 +12,9 @@ class CategoryController extends Controller
 {
 
     public function index(){
-        $categories = Category::latest()->paginate(10);
+        $categories = Category::latest()
+                    ->with('products')
+                    ->paginate(10);
 
         return response()->json([
             'status' => 'true',
@@ -34,12 +36,13 @@ class CategoryController extends Controller
     }
 
 
-    public function show(Category $category)
+    public function show(category $category)
     {
+         $categoryProduct  = $category->load('products'); 
         return response()->json([
             'status' => true,
             'message' => 'Category fetched succesfully !',
-            'data' => $category
+            'data' => $categoryProduct
          ]);
     }
 
@@ -48,29 +51,30 @@ class CategoryController extends Controller
             'name' => $request->name ?? $category->name,
             'description' => $request->description ?? $category->description
          ]);
-
+          
          if($data){
             return response()->json([
-                'status' => 'success',
+                'status' => true,
                 'message' => 'category updated succesfully',
-                'data' => $data
             ]);
 
             return response()->json([
-                'status' => 'success',
+                'status' => false,
                 'message' => 'error'
             ]);
         }
     }
 
-    public function delete(category $category){
-            if($category->delete()){
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'category deleted successfuly'
-                ]);
-            }
-    }
+    public function delete($category){
     
-    
+        $category = category::where('categoryId', $category)->delete();   
+        
+        if($category){
+            return response()->json([
+            'status' => true,
+            'message' => 'category deleted successfuly'
+        ]);
+             
+        }           
+    }  
 }

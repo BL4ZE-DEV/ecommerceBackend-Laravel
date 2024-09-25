@@ -38,14 +38,14 @@ class AuthenticationController extends Controller
     
         $token = JWTAuth::fromUser($user);
     
-        try {
-            Mail::to($request->email)->send(new RegistrationSuccesful(['name' => $request->name, 'phone' => $request->phone]));
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'error',
-                'error' => $e->getMessage()
-            ]);
-        }
+        // try {
+        //     Mail::to($request->email)->send(new RegistrationSuccesful(['name' => $request->name, 'phone' => $request->phone]));
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'message' => 'error',
+        //         'error' => $e->getMessage()
+        //     ]);
+        // }
     
         return response()->json([
             'message' => 'Registration successful',
