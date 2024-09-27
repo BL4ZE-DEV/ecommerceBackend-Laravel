@@ -1,66 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+// namespace App\Http\Controllers;
 
-use App\Models\payment;
-use App\Http\Requests\StorepaymentRequest;
-use App\Http\Requests\UpdatepaymentRequest;
+// use App\Models\payment;
+// use App\Http\Requests\StorepaymentRequest;
+// use App\Http\Requests\UpdatepaymentRequest;
+// use App\Models\order;
+// use App\Models\shoppingCart;
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Auth;
 
-class PaymentController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+// class PaymentController extends Controller
+// {
+//     public function checkout(Request $request, shoppingCart $shoppingCart){
+//         $request->validate([
+//             'shipping_address' => 'required|string',
+//             'payment_method' => 'required|string'
+//         ]);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+//         order::create([
+//             'userId' => Auth::user()->userId,
+//             'cartId' => $shoppingCart->cartId,
+//             'shipping_address' => $request->shipping_address,
+//             'payment_method' => $request->payment_method
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorepaymentRequest $request)
-    {
-        //
-    }
+//         ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatepaymentRequest $request, payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(payment $payment)
-    {
-        //
-    }
-}
+        
+//     }
+// }
