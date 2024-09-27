@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CartProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShoppingCartController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Models\CartProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +34,15 @@ Route::middleware(['auth:api'])->group(function () {
             Route::post('/', [ProductController::class, 'store']);
             Route::put('/{product}', [ProductController::class, 'update']);
             Route::delete('/{product}', [ProductController::class, 'delete']);
+        });
+
+        Route::prefix('cart')->as('cart.')->group(function() {
+            Route::post('/', [CartProductController::class, 'addTocart']);
+            Route::get('/', [ShoppingCartController::class, 'getCart']);
+            Route::delete('/clearCart', [ShoppingCartController::class, 'clearCart']);
+            Route::get('/listCartProduct', [CartProductController::class, 'listCartProduct']);
+            Route::patch('/{productId}/updateQunatity', [CartProductController::class, 'updateQuantity']);
+            Route::delete('/{productId}/removeFromCart', [CartProductController::class, 'removeFromCart']);
         });
     });
 

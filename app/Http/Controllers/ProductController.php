@@ -19,14 +19,13 @@ class ProductController extends Controller
     }
 
     public function store(StoreproductRequest $request){
-        $category = category::where('name', $request->category)->first();
 
         $product = product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'quantity' => $request->quantity,
-            'categoryId' => $category->categoryId
+            'categoryId' => $request->categoryId
         ]);
 
         return response()->json([
@@ -47,7 +46,7 @@ class ProductController extends Controller
     }
 
     public function update(UpdateproductRequest $request, product $product){
-        $category = category::where('name', $request->category_name);
+        $category = category::where('categoryId', $request->categoryId);
         $data = $product->update([
             'name' => $request->name ?? $product->name,
             'description' => $request->description ?? $product->description,
@@ -59,7 +58,6 @@ class ProductController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Product updated succesfully',
-                'data' => $data
             ]);
 
             return response()->json([

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->uuid('orderId')->unique();
             $table->string('name');
             $table->foreignUuid('userId')->constrained('users', 'userId');
+            $table->string('shipping_address');
+            $table->string('payment_method');
             $table-> string('status')->default('pending');
             $table->timestamps();
         });
