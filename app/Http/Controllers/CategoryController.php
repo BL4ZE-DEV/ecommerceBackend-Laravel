@@ -14,7 +14,9 @@ class CategoryController extends Controller
     public function index(){
         $categories = Category::latest()
                     ->with('products')
-                    ->paginate(10);
+                    ->get();
+
+    
 
         return response()->json([
             'status' => 'true',
