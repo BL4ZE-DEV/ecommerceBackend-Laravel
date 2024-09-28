@@ -41,9 +41,9 @@ class Product extends Model
             $model->{$model->getKeyName()} = (string) Str::uuid();
         });
     }
-    public function catgeory() : BelongsTo
+    public function category() : BelongsTo
     {
-        return $this->belongsTo(category::class,'CategoryId');
+        return $this->belongsTo(category::class,'categoryId');
     }
 
     public function orderItem() : HasMany

@@ -13,11 +13,16 @@ class shoppingCart extends Model
 {
     use HasFactory, HasUuids;
     
-    protected $primaryKey = 'shoppingCartId' ;
+    protected $primaryKey = 'cartId' ;
 
     public $incrementing = false;
 
     protected $keyType = 'string';
+
+
+    protected $fillable = [
+        'userId'
+    ];
 
 
 

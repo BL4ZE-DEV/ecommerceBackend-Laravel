@@ -12,8 +12,10 @@ class category extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $primaryKey = 'CategoryId';
+    protected $primaryKey = 'categoryId';
+
     protected $keyType = 'string';
+    
     public  $incrementing = false;
 
 
@@ -25,8 +27,7 @@ class category extends Model
     protected $hidden = [
         'id',
         'created_at',
-        'updated_at',
-        'description'
+        'updated_at'
     ];
 
 
@@ -43,7 +44,7 @@ class category extends Model
 
     public function products() : HasMany
     {
-        return $this->hasMany(product::class, 'CategoryId');
+        return $this->hasMany(product::class, 'categoryId');
     }
 
 }

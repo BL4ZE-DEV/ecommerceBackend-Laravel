@@ -15,7 +15,7 @@ class ShoppingCartController extends Controller
     {
         $user =  Auth::user();
 
-        $cart = shoppingCart::where('userId', $user->userId)->with('cartProduct.product')->first();
+        $cart = shoppingCart::where('userId', $user->userId)->with('cartsProduct')->first();
 
         if(!$cart){
             return response()->json([
@@ -24,7 +24,8 @@ class ShoppingCartController extends Controller
         }
 
         return response()->json([
-            'messsage' => 'cart received successfully'
+            'messsage' => 'cart received successfully',
+            'cart' => $cart
         ]);
     }
 
@@ -34,10 +35,11 @@ class ShoppingCartController extends Controller
         $cart = ShoppingCart::where('userId', $userId)->first();
 
         if ($cart) {
-            $cart->cartProducts()->delete();
+            $cart->cartsProduct()->delete();
             return response()->json(['message' => 'Cart cleared successfully'], 200);
         }
 
         return response()->json(['message' => 'Cart not found'], 404);
     }
 }
+ 
