@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\RoleMiddleware;
 use App\Models\category;
 use App\Http\Requests\StorecategoryRequest;
 use App\Http\Requests\UpdatecategoryRequest;
-
-
 class CategoryController extends Controller
 {
 
@@ -73,10 +70,24 @@ class CategoryController extends Controller
         
         if($category){
             return response()->json([
-            'status' => true,
+            'status' => true,   
             'message' => 'category deleted successfuly'
         ]);
              
         }           
-    }  
+    }
+
+    public function search(){
+        $category = Category::where(function($query){
+            $query->when(request()->filled('search'), function($query){
+                return $query->where('name' , 'LIKE' , '%'.request('search').'%');
+            });
+        })->paginate();
+
+
+        return response()->json([
+            'status' => true,
+            'categories' => $category
+        ]);
+    }
 }
