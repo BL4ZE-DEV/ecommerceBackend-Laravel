@@ -40,7 +40,7 @@ class ProductController extends Controller
     {
         return response()->json([
             'status' => true,
-            'message' => 'product fetched succesfully !',
+            'message' => 'product fetched succesfully!',
             'data' => $product
          ]);
     }
@@ -74,5 +74,15 @@ class ProductController extends Controller
                     'message' => 'Product deleted successfuly'
                 ]);
             }
+    }
+
+
+    public function search(){
+        
+        $product = product::where(function ($query){
+            $query->when(request()->filled('search'), function ($query){
+                    return $query->where('name', 'LIKE' , '%'.request('search').'%');
+            });
+        });
     }
 }
