@@ -5,7 +5,7 @@ on:
     branches: [ "BL4ZE" ]
 
 jobs:
-  Todo-List-Development-Environment:
+  Ecommerce-Development-Environment:
 
     runs-on: ubuntu-latest
 
