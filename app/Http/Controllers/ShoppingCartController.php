@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\shoppingCart;
-use App\Http\Requests\StoreshoppingCartRequest;
-use App\Http\Requests\UpdateshoppingCartRequest;
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
