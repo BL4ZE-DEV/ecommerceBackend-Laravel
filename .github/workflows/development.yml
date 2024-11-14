@@ -2,7 +2,7 @@ name: Development Environment
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "BL4ZE" ]
 
 jobs:
 
