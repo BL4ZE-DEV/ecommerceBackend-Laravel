@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->uuid('orderId')->unique();
+            $table->string('name');
+            $table->foreignUuid('userId')->constrained('users', 'userId');
+            $table->string('shipping_address');
+            $table->string('payment_method');
+            $table-> string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('orders');
     }
 };

@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('cart_products', function (Blueprint $table) {
             $table->id();
-            $table->uuid('productId')->unique();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->foreignUuid('cartId')->constrained('shopping_carts', 'cartId');
+            $table->foreignUuid('productId')->constrained('products', 'productId');
+            $table->decimal('amount', 10, 2);
             $table->integer('quantity');
-            $table->decimal('price', 10, 2);
-            $table->foreignUuid('categoryId')->constrained('categories', 'categoryId');
+            $table->decimal('line_amount', 10, 2)->storedAs('quantity*amount');     
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('cart_products');
     }
 };
