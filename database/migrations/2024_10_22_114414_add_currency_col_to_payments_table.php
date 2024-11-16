@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shopping_carts', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('cartId')->unique();
-            $table->foreignUuid('userId')->constrained('users', 'userId');
-            $table->timestamps();
+        Schema::table('payments', function (Blueprint $table) {
+           $table->string('currency'); 
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shopping_carts');
+        Schema::table('payments', function (Blueprint $table) {
+            //
+        });
     }
 };

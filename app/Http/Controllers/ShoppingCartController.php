@@ -3,64 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\shoppingCart;
-use App\Http\Requests\StoreshoppingCartRequest;
-use App\Http\Requests\UpdateshoppingCartRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function getCart()
     {
-        //
+        $user =  Auth::user();
+
+        $cart = shoppingCart::where('userId', $user->userId)->with('cartsProduct')->first();
+
+        if(!$cart){
+            return response()->json([
+                'message' => 'cart is empty'
+            ]);
+        }
+
+        return response()->json([
+            'messsage' => 'cart received successfully',
+            'cart' => $cart
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function clearCart()
     {
-        //
-    }
+        $userId = Auth::user()->userId;
+        $cart = ShoppingCart::where('userId', $userId)->first();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreshoppingCartRequest $request)
-    {
-        //
-    }
+        if ($cart) {
+            $cart->cartsProduct()->delete();
+            return response()->json(['message' => 'Cart cleared successfully'], 200);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(shoppingCart $shoppingCart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(shoppingCart $shoppingCart)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateshoppingCartRequest $request, shoppingCart $shoppingCart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(shoppingCart $shoppingCart)
-    {
-        //
+        return response()->json(['message' => 'Cart not found'], 404);
     }
 }
+ 

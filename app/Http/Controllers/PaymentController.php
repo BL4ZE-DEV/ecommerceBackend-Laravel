@@ -2,65 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\payment;
-use App\Http\Requests\StorepaymentRequest;
-use App\Http\Requests\UpdatepaymentRequest;
+use App\Enums\OrderStatus;
+use App\Models\order;
+use App\Models\Product;
+use App\Models\shoppingCart;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Stripe\Charge;
+use Stripe\Stripe;
+use Throwable;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function checkout(Request $request, shoppingCart $shoppingCart){
+
+        $request->validate([
+            'email' => 'required|email',
+            'amount' => 'required|interger|min:1'
+        ]);
+
+        if($shoppingCart->empty()){
+            return response()->json([
+                'Status' => FALSE,
+                'message' => 'Empty Cart'
+            ]);
+        }
+
+        $data = [
+            'email' => $request->email,
+            'amount' => $request->amount,
+            'refrence' => 'txn_'. uniqid(),
+            'callback_url' => '',
+            'metaData' => [
+                'cartId' => $shoppingCart->id,
+                'userId' => Auth::user()->id
+            ]
+        ];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorepaymentRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatepaymentRequest $request, payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(payment $payment)
-    {
-        //
+    public function callback(){
+        
     }
 }
+
