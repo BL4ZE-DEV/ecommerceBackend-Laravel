@@ -2,10 +2,11 @@ name: Development Environment
 
 on:
   push:
-    branches: [ "BL4ZE" ]
+    branches: [ "main" ]
 
 jobs:
-  Ecommerce-Development-Environment:
+  Todo-List-Development-Environment:
+
 
     runs-on: ubuntu-latest
 
@@ -61,5 +62,7 @@ jobs:
         key: ${{ secrets.PRIVATE_SSH_KEY}}
         port: ${{ secrets.PORT }}
         source: "."
+
         target: "/var/www/html/Ecommerce
+
         # target: ${{ secrets.FOLDER }}
