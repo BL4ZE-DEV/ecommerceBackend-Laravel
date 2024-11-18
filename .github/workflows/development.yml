@@ -64,5 +64,6 @@ jobs:
         port: 81
         source: "."
         target: "/var/www/html/Ecommerce"
+        debug: true
 
         # target: ${{ secrets.FOLDER }}
