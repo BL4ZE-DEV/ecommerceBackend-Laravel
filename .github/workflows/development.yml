@@ -59,7 +59,7 @@ jobs:
         host: ${{ secrets.HOSTNAME }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.PRIVATE_SSH_KEY}}
-        port: ${{ secrets.PORT }}
+        port: 81
         source: "."
         target: "/var/www/html/Ecommerce"
         # target: ${{ secrets.FOLDER }}
