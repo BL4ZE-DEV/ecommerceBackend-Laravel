@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+Route::get('testing-stuffs', function(){
+    return 'Yaaaay! we here!!';
+});
+
 
 Route::post('auth/register', [AuthenticationController::class, 'register']);
 Route::post('auth/login', [AuthenticationController::class, 'login']);
