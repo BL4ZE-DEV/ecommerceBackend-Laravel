@@ -30,7 +30,7 @@ class AuthenticationController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
-                'roleId' => $role->roleId
+                'role' => $role->name
             ]);
         } else {
             return response()->json(['error' => 'Role not found'], 404);
