@@ -28,12 +28,5 @@ class Role extends Model
     public function user() : HasMany
     {
         return $this->hasMany(User::class, 'roleId');
-    }
-
-    public function run(): void 
-    {
-        Role::factory()
-                ->count(3)
-                ->create();
     }   
 }
