@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CartProductController;
 use App\Http\Controllers\CategoryController;
@@ -22,6 +23,7 @@ Route::get('testing-stuffs', function(){
 
 Route::post('auth/register', [AuthenticationController::class, 'register']);
 Route::post('auth/login', [AuthenticationController::class, 'login']);
+Route::post('auth/adminLogin', [AdminController::class, 'login']);
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -39,15 +41,15 @@ Route::middleware(['auth:api'])->group(function () {
             Route::put('/{product}', [ProductController::class, 'update']);
             Route::delete('/{product}', [ProductController::class, 'delete']);
         });
+    });
 
-        Route::prefix('cart')->as('cart.')->group(function() {
-            Route::post('/', [CartProductController::class, 'addTocart']);
-            Route::get('/', [ShoppingCartController::class, 'getCart']);
-            Route::delete('/clearCart', [ShoppingCartController::class, 'clearCart']);
-            Route::get('/listCartProduct', [CartProductController::class, 'listCartProduct']);
-            Route::patch('/{productId}/updateQunatity', [CartProductController::class, 'updateQuantity']);
-            Route::delete('/{productId}/removeFromCart', [CartProductController::class, 'removeFromCart']);
-        });
+    Route::prefix('cart')->as('cart.')->group(function() {
+        Route::post('/', [CartProductController::class, 'addTocart']);
+        Route::get('/', [ShoppingCartController::class, 'getCart']);
+        Route::delete('/clearCart', [ShoppingCartController::class, 'clearCart']);
+        Route::get('/listCartProduct', [CartProductController::class, 'listCartProduct']);
+        Route::patch('/{productId}/updateQunatity', [CartProductController::class, 'updateQuantity']);
+        Route::delete('/{productId}/removeFromCart', [CartProductController::class, 'removeFromCart']);
     });
 
     Route::prefix('product')->as('product.')->group(function () {
