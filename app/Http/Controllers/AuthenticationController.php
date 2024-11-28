@@ -6,10 +6,12 @@ use App\Http\Requests\StoreuserRequest;
 use App\Mail\RegistrationSuccesful;
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\JWT;
 
@@ -79,4 +81,19 @@ class AuthenticationController extends Controller
             'data' => $user
         ]);
     }
+
+    public function googleLogin(){
+    
+        try {
+        return Socialite::driver('google')->stateless()->user();
+        }catch(Exception $e){
+            return response()->json([
+              'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    // public function googleCallback(){
+        
+    // }
 }
