@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::get('google-login', [AuthenticationController::class,'googleLogin']);
+Route::get('google-login', [AuthenticationController::class,'redirectToGoogle']);
 
 
 Route::post('auth/register', [AuthenticationController::class, 'register']);
