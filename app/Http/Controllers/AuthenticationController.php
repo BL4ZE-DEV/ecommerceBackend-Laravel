@@ -3,18 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreuserRequest;
-use App\Mail\RegistrationSuccesful;
 use App\Models\Role;
 use App\Models\User;
-use Error;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth ;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\JWT;
+use Illuminate\Support\Str;
 
 use function Laravel\Prompts\error;
 
@@ -95,10 +91,53 @@ class AuthenticationController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        }
+    }
     
+    // public function googleRegister()
+    // {
+    //     try {
 
-    // public function googleCallback(){
-        
+            
+
+    //         $googleData = Socialite::driver('google')->stateless()->user();
+    
+    //         $existingUser = User::where('email', $googleData->getEmail())->first();
+    
+    //         if ($existingUser) {
+    //             return response()->json([
+    //                 'status' => 'Success',
+    //                 'message' => 'User already registered',
+    //                 'data' => $existingUser,
+    //             ]);
+    //         }
+    
+    //         $role = Role::where('name', 'customer')->first();
+   
+    //         $user = User::create([
+    //             'UserId' => Str::uuid(),
+    //             'roleId' => $role->RoleId,
+    //             'name' => $googleData->getName(),
+    //             'email' => $googleData->getEmail(),
+    //             'password' => Hash::make(Str::random()), 
+    //             'phone' => '08111841964', 
+    //             'role' => $role->name,
+    //         ]);
+
+    //         $token = JWTAuth::fromUser($user);
+
+    
+    //         return response()->json([
+    //             'status' => 'Success',
+    //             'message' => 'User registered successfully',
+    //             'token' => $token,
+    //             'data' => $user,
+    //         ]);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'status' => 'Error',
+    //             'message' => $e->getMessage(),
+    //         ], 500);
+    //     }
     // }
+    
 }
